@@ -5,11 +5,7 @@ f = figure('Visible','off','Position',[360,500,450,285],'NumberTitle','off');
 % Make the GUI larger
 set(gcf, 'units','normalized','outerposition',[0 0 0.8 0.8]); 
 neoOri = 0;
-%  Construct the components.
-FwdButton = uicontrol('Style','pushbutton','String','Fwd',  'Position',[315,250,70,25],'Callback',{@FwdButton_Callback});
-BckButton = uicontrol('Style','pushbutton','String','Bck',  'Position',[315,220,70,25],'Callback',{@BckButton_Callback});
-LftButton = uicontrol('Style','pushbutton','String','Left', 'Position',[315,190,70,25],'Callback',{@LftButton_Callback});
-RghButton = uicontrol('Style','pushbutton','String','Right','Position',[315,160,70,25],'Callback',{@RghButton_Callback});      
+%  Construct the components.    
 StpButton = uicontrol('Style','pushbutton','String','Stop', 'Position',[315,130,70,25],'Callback',{@StpButton_Callback});
 RstButton = uicontrol('Style','pushbutton','String','Reset','Position',[315,100,20,25],'Callback',{@RstButton_Callback});
 UndButton = uicontrol('Style','pushbutton','String','Undo', 'Position',[365,100,20,25],'Callback',{@UndButton_Callback});
@@ -25,9 +21,6 @@ ChkBoxDebu = uicontrol('Style','checkbox','String','D',     'Position',[375, 25,
 global RobotPath1Layer RobotPath2Layer WallLayer laserScan xW yW neoPose p poseAndTimeUnitTest neoPos calcPosex calcPosey dT chkLayer
 
 ha = axes('Units','Pixels','Position',[50,60,200,185]); 
-align([FwdButton,BckButton,LftButton,RghButton,StpButton,RstButton,TxtOri],'Center','None');
-
-
 
 % Create the data to plot.
 mapSize = 640; % the size of the map
@@ -45,7 +38,7 @@ chkLayer = [true(1) true(1) false(1) false(1)]; % Wall Empty Path1 Path2 layers
 
 %% Initialize the GUI.
 % Change units to normalized so components resize automatically.
-set([f,ha,FwdButton,BckButton,LftButton,RghButton,StpButton,RstButton,UndButton,TxtOri,ExtButton,ChkBoxPth1,ChkBoxPth2,ChkBoxWall,ChkBoxEmpt,ChkBoxDebu],'Units','normalized');
+set([f,ha,StpButton,RstButton,UndButton,TxtOri,ExtButton,ChkBoxPth1,ChkBoxPth2,ChkBoxWall,ChkBoxEmpt,ChkBoxDebu],'Units','normalized');
 %Create a plot in the axes.
 image(WallLayer);
 % Assign the GUI a name to appear in the window title.
@@ -55,25 +48,21 @@ movegui(f,'center')
 % Make the GUI visible.
 set(f,'Visible','on');
 
-% Connect to V-REP (if not already connected)
-if(exist('vrep','var') == 0)
-    [vrep, clientID] = connectVREP('127.0.0.1',19997);
-end
-[~,motorLeft] = vrep.simxGetObjectHandle(clientID, 'wheel_left#0', vrep.simx_opmode_oneshot_wait);
-[~,motorRight] = vrep.simxGetObjectHandle(clientID, 'wheel_right#0', vrep.simx_opmode_oneshot_wait);
-[~,sickHandle] = vrep.simxGetObjectHandle(clientID, 'SICK_S300_fast#0', vrep.simx_opmode_oneshot_wait);
-[~,neoHandle0] = vrep.simxGetObjectHandle(clientID, 'neobotix#0', vrep.simx_opmode_oneshot_wait);
-[~,origoHandle] = vrep.simxGetObjectHandle(clientID, 'origo', vrep.simx_opmode_oneshot_wait);
-% Initailize the timer
+% [~,motorLeft] = vrep.simxGetObjectHandle(clientID, 'wheel_left#0', vrep.simx_opmode_oneshot_wait);
+% [~,motorRight] = vrep.simxGetObjectHandle(clientID, 'wheel_right#0', vrep.simx_opmode_oneshot_wait);
+% [~,sickHandle] = vrep.simxGetObjectHandle(clientID, 'SICK_S300_fast#0', vrep.simx_opmode_oneshot_wait);
+% [~,neoHandle0] = vrep.simxGetObjectHandle(clientID, 'neobotix#0', vrep.simx_opmode_oneshot_wait);
+% [~,origoHandle] = vrep.simxGetObjectHandle(clientID, 'origo', vrep.simx_opmode_oneshot_wait);
+% % Initailize the timer
 tic
 % Initialize the main figure
 DrawAllLayer()
-SetWheelSpeed(0,0);
+% SetWheelSpeed(0,0);
 currentTime = toc;
-GetPose();
+% GetPose();
 poseAndTimeUnitTest = double([]);
-calcPosex = neoPos(1);
-calcPosey = neoPos(2);
+%calcPosex = neoPos(1);
+%calcPosey = neoPos(2);
 % Set the checkboxes to checked
 set(ChkBoxWall ,'Value',1);
 set(ChkBoxEmpt ,'Value',1);
@@ -301,9 +290,9 @@ function DrawAllLayer()
     chkLayer(3) = get(ChkBoxPth1,'Value');
     chkLayer(4) = get(ChkBoxPth2,'Value');
     set(TxtOri, 'String', sprintf('x:%d\n y:%d\n theta:%.3f\n', neoPose.x, neoPose.y, neoPose.theta));
-    GetPose();
-    GetLaserScannerData();
-    laserScan = [cos(neoPose.theta),-sin(neoPose.theta),0;sin(neoPose.theta),cos(neoPose.theta),0;0,0,1] * laserScan; % rotate laser scanner data (orientation)
+    %GetPose();
+    %GetLaserScannerData();
+    %laserScan = [cos(neoPose.theta),-sin(neoPose.theta),0;sin(neoPose.theta),cos(neoPose.theta),0;0,0,1] * laserScan; % rotate laser scanner data (orientation)
     PrevLayer = WallLayer;
     if chkLayer(1)
         AddWallToLayer()
