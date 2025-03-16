@@ -1,39 +1,22 @@
 %% Get laser scanner data
+%calculate cartesian Coordinates
 function plotLaserScanner(app)
 
 [img1,img2] = getVisionScanner(app); % 1x256 1x256 double
-scn = [img2,img1]; % 1x512 double
+scn = [fliplr(img2),img1]; % This is a 512 vector of the rays left to right
+%now call the lidar update function
 
-%% Plot laser scanner
+rho = 90;
+dtheta = (rho/(size(scn,2)-1))*pi/180;
+theta = (-(rho/2)*pi/180):dtheta:((rho/2)*pi/180);
+scn2 = lensdistort(scn,0.5);
+app.vision = pol2cart(theta, scn2);
+app.globalTheta = theta;
 
-x = zeros(1,512);
-y = zeros(1,512);
-xtmp = zeros(1,513);
-ytmp = zeros(1,513);
+[r, velocity, angVelocity] = app.sim.simxGetObjectVelocity(app.clientID, app.youBotHandle, app.sim.simx_opmode_blocking);
+v = norm(velocity(1:2));
+omega = angVelocity(3);
+updateGlobalMap(app, app.vision, (app.globalTheta), ...
+    (v), (omega), (app.UpdateIntervalsecondsEditField.Value));
 
-
-for n = 1:512
-    if ((scn(n) < 0.9) && (scn(n) > 0.04))
-        x(n) = cos((n*1.42222222378*pi/512)) / (1-scn(n));
-        y(n) = sin((n*1.42222222378*pi/512)) / (1-scn(n));
-        %i=i+1;
-    else
-        x(n) = 0;
-        y(n) = 0;
-        xtmp(n) = cos((n*1.5*pi/512)) * 1;
-        ytmp(n) = sin((n*1.5*pi/512)) * 1;
-    end
-end
-
-all = [x;y];
-
-cla(app.UIAxes);
-hold(app.UIAxes, 'on') ;
-fill(app.UIAxes, xtmp, ytmp, 'b') % Background
-fill(app.UIAxes, x, y, 'r') % Detected objects
-hold(app.UIAxes, 'off')
-%clf
-%hold on
-%fill(xtmp, ytmp, 'b')
-%ill(x, y, 'r')
 end
