@@ -1,24 +1,4 @@
 function updateGlobalMap(app, r, theta, v, omega, dt)
-    % Define persistent variables
-    persistent X_robot Y_robot Theta_robot LogOddsMap;
-    
-    % Define map parameters
-    map_width_m = 10;  % 10 meters wide
-    map_height_m = 5;  % 5 meters tall
-    cell_size = 0.01;   % Each cell is 1 cm
-    map_width = map_width_m / cell_size;   % 1000 cells
-    map_height = map_height_m / cell_size; % 500 cells
-    
-    % Initialize robot position and global map if first call
-    if ~app.mapInit
-        X_robot = (.001);  % Assume starting at real-world (0,0)
-        Y_robot = (.001);
-        Theta_robot = (0); % Assume initial heading is 0 rad
-        LogOddsMap = zeros(map_width, map_height); % Initialize log-odds map
-        app.mapInit = true;
-        return;
-    end
-    
     % Update estimated position using dead reckoning
     if isempty(v)
         X_robot = X_robot ;
