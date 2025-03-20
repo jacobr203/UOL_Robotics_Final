@@ -32,16 +32,16 @@ for i = 1:684
 end
 
 %plot changes
-for i = 1:684
+for i = 1:height(X_grid)
     % Compute line points from robot (0,0) to the detected obstacle
-   % c = CalcLine(0, 0, X_grid(i), Y_grid(i));
+    c = CalcLine(0, 0, X_grid(i), Y_grid(i));
     
     % Mark free space along the ray (excluding the last point)
-   % for j = 1:size(c, 1) 
-    %    if c(j,1) > 0 && c(j,1) <= map_width && c(j,2) > 0 && c(j,2) <= map_height
-   %         app.LogOddsMap(c(j,2), c(j,1)) = app.LogOddsMap(c(j,2), c(j,1)) + log_odds_free;                
- %       end
-  %  end
+    for j = 1:size(c, 1) 
+        if c(j,1) > 0 && c(j,1) <= map_width && c(j,2) > 0 && c(j,2) <= map_height
+            app.LogOddsMap(c(j,2), c(j,1)) = app.LogOddsMap(c(j,2), c(j,1)) + log_odds_free;                
+        end
+    end
     
     % Mark the final detected obstacle cell
     if X_grid(i) > 0 && X_grid(i) <= map_width && Y_grid(i) > 0 && Y_grid(i) <= map_height
@@ -56,9 +56,7 @@ app.LogOddsMap = max(min(app.LogOddsMap, 10), -10);
 app.LogOddsMap = 1 ./ (1 + exp(-app.LogOddsMap)); 
 
 % Display the map
-hold on;
 imshow(app.LogOddsMap, 'Parent', app.UIAxes2);  
 colormap(app.UIAxes2, 'gray');
 title(app.UIAxes2, 'Global Occupancy Grid');
-hold off;
 end

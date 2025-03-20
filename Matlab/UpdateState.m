@@ -10,8 +10,8 @@ function UpdateState(app)
     %dy = ODE(2);
     %dTheta = ODE(3);
     velocity_vector = [app.currentAngVelocity*app.dt, app.currentVelocity*app.dt].';
-    M = [cos(app.currentTheta),0;sin(app.currentTheta),0;0,1]
-    delta = M*velocity_vector; %[dx,dy,dtheta]
+    M = [cos(app.currentTheta),0;sin(app.currentTheta),0;0,1];
+    delta = M*velocity_vector; %[dx,dy,dtheta];
 
     app.currentTheta = app.currentTheta + delta(3);
     app.Robot_x = app.Robot_x + delta(1);
