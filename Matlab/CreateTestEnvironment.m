@@ -1,6 +1,6 @@
 %ideal environment is the map with its walls completely filled
 %scoring for detection is as follows
-
+return;
 grid_width = 1000;
 grid_height = 500;
 ideal_environment = zeros(grid_width,grid_height);
@@ -19,10 +19,6 @@ ideal_environment(495:500,1:1000) = 10;
 % position
 ideal_environment(round(-80 +250): round(-75 +250) ,round(280) :round(649)) = 10;
 
-
-
-
-figure;
 imagesc(ideal_environment);
 colormap([1 1 1; 0 0 0]);  % 0 = white (free space), 1 = black (obstacle)
 axis equal;
