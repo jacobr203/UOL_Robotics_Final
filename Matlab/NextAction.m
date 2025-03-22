@@ -9,7 +9,7 @@ switch app.LastCommand
             rotVel = app.inputRotationDirection;
 		case 'Translate'
 			%StopMovement(app);
-            forwBackVel = app.inputTranslationDirection;
+            forwBackVel = 2*app.inputTranslationDirection;
             leftRightVel = 0;
             rotVel = 0;
 		case 'Stop'

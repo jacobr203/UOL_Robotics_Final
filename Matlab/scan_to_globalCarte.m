@@ -21,9 +21,7 @@ for i=1:684
     pos = T_Rotation * p_local + T_Translation;
     x_global(i) = pos(2)*100;
     y_global(i) = pos(1)*100;
-
- 
-
+    
 %calculate transformation  https://kineticstoolkit.uqam.ca/doc/geometry_transform_local_to_global_coordinates.html  
 end 
 
