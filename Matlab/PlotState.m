@@ -20,7 +20,7 @@ end
 x_global = x_original;
 y_global = y_original;
 % Log-odds parameters
-log_odds_occupied = .4;
+log_odds_occupied = .5;
 log_odds_free = -0.4;
 
 x_global = round(x_global);
