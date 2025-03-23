@@ -37,12 +37,13 @@ for i = 1:684
     end
 end
 
+%decay points not at max
 B = (app.LogOddsMap - 12);
-app.LogOddsMap = app.LogOddsMap + B/100;
+app.LogOddsMap = app.LogOddsMap + B/50;
 
 
 % Clamp log-odds values to keep them within the valid range
-app.LogOddsMap = max(min(app.LogOddsMap, 12), -12);
+app.LogOddsMap = max(min(app.LogOddsMap, 12), 0);
 
 % Convert log-odds to probability
 %app.LogOddsMap = 1 ./ (1 + exp(-app.LogOddsMap)); 
@@ -50,6 +51,8 @@ app.LogOddsMap = max(min(app.LogOddsMap, 12), -12);
 % Display the map
 imagesc(app.LogOddsMap);  
 set(gca,'YDir','normal')
-saveme = app.LogOddsMap;
-%linkdata on
+%saveme = app.LogOddsMap;
+linkdata on
+
+
 end
