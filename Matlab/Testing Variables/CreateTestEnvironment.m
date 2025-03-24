@@ -1,17 +1,17 @@
 
 %ideal environment is the map with its walls completely filled
 %scoring for detection is as follows
-grid_width = 1000;
-grid_height = 500;
-ideal_environment = zeros(grid_height,grid_width);
-grid_center_x = 0;
-grid_center_y = 0;
 
-Map4 = max(0, Map4);
-%Map4(197:200,234:335) = 1;
-imagesc(Map4);
+gridData(326:464,264) = 0.999000012874603;
+gridData(294:465,256:263) = 0.500026345252991;
+gridData(175:230,347) = 0.999000012874603;
+gridData(175:230,348:349) = 0.00100000004749745;
 
-save('drawn');
+imagesc(gridData);  
+
+
+
+%save('drawn');
 
 
 %perimeter walls

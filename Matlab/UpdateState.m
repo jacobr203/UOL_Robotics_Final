@@ -5,7 +5,7 @@ function UpdateState(app)
 	dTheta = -(app.angularVelocity(3) * app.dt); %call this relative to the sensor
 	app.Robot_x = app.Robot_x + dx;
 	app.Robot_y = app.Robot_y + dy;
-	app.currentTheta = app.currentTheta - dTheta;
+	app.currentTheta = app.currentTheta + dTheta;
 	if app.currentTheta > 2*pi || app.currentTheta < -(2*pi)
 		app.currentTheta = app.currentTheta/(2*pi);
 	end
